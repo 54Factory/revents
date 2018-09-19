@@ -5,7 +5,7 @@ class App extends Component {
   render() {
     return (
       <div>
-          <h1>Re-Vents is the shit!</h1>
+          <h1>Re-Vents is the shit.</h1>
       </div>
     );
   }
