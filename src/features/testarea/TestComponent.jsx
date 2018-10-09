@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import GoogleMapReact from 'google-map-react';
 import { connect } from 'react-redux';
-import { Button, Icon } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 //import Script from 'react-load-script'
 import { incrementCounter, decrementCounter } from './testActions'
