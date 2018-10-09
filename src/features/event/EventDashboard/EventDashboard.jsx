@@ -3,6 +3,7 @@ import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import EventList from '../EventList/EventList';
 import LoadingComponent from '../../../app/layout/LoadingComponent'
+import EventActivity from '../EventActivity/EventActivity'
 import { deleteEvent } from '../eventActions';
 
 const mapState = (state) => ({
@@ -35,7 +36,7 @@ class EventDashboard extends Component {
             />
           </Grid.Column>
           <Grid.Column width={6}>
-            <h1>Empty Grid Column</h1>
+            <EventActivity />
           </Grid.Column>
         </Grid>
       </div>

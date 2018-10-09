@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import format from 'date-fns/format'
 import { Segment, Grid, Icon, Button } from 'semantic-ui-react';
 import EventDetailMap from '../EventDetail/EventDetailMap'
 
@@ -14,6 +15,12 @@ class EventDetailInfo extends Component {
     this.setState(prevState => ({
       showMap: !prevState.showMap
     }))
+  }
+
+  componentWillUnmount() {
+    this.setState({
+      showMap: false
+    })
   }
 
   render() {
@@ -36,7 +43,7 @@ class EventDetailInfo extends Component {
                <Icon name="calendar" size="large" color="teal" />
              </Grid.Column>
              <Grid.Column width={15}>
-               <span>{event.date}</span>
+               <span>{format(event.date, 'dddd MMMM Do')} at {' '} {format(event.date, 'h:mm a')}</span>
              </Grid.Column>
            </Grid>
          </Segment>
