@@ -4,17 +4,20 @@ import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 //import Script from 'react-load-script'
-import { incrementCounter, decrementCounter } from './testActions'
+import { incrementCounter, decrementCounter, incrementAsync, decrementAsync } from './testActions'
 import { openModal } from '../modals/modalActions'
 
 const mapState = (state) => ({
-  data: state.test.data
+  data: state.test.data,
+  loading: state.test.loading
 })
 
 const actions = {
   incrementCounter,
   decrementCounter,
-  openModal
+  openModal,
+  incrementAsync, 
+  decrementAsync 
 
 }
 
@@ -53,7 +56,7 @@ class TestComponent extends Component {
 
   render() {
     
-    const {incrementCounter, decrementCounter, openModal, data} = this.props
+    const {incrementCounter, decrementCounter, incrementAsync, decrementAsync,  openModal, data, loading} = this.props
     const inputProps = {
       value: this.state.address,
       onChange: this.onChange,
@@ -69,6 +72,8 @@ class TestComponent extends Component {
         <h3>The answer is: {data}</h3>
         <Button onClick={incrementCounter} color='green' content='Increment' />
         <Button onClick={decrementCounter} color='red' content='Decrement' />
+        <Button loading={loading} onClick={incrementAsync} color='blue' content='AsyncUP' />
+        <Button loading={loading} onClick={decrementAsync} color='yellow' content='AsyncDN' />
         <Button onClick={ () =>  openModal('TestModal', {data: 43})} color='teal' content='Open Modal' />
         <br />
         <br />
