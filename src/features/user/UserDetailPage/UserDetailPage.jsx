@@ -45,8 +45,6 @@ class UserDetailPage extends Component {
   }
 }
 
-
-
 export default compose(
   connect(mapState),
   firestoreConnect(auth => query(auth))
