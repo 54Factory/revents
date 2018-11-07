@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import EventList from '../EventList/EventList';
 import LoadingComponent from '../../../app/layout/LoadingComponent'
 import EventActivity from '../EventActivity/EventActivity'
@@ -9,7 +9,6 @@ import { deleteEvent } from '../eventActions';
 
 const mapState = (state) => ({
   events: state.firestore.ordered.events,
-  loading: state.async.loading
 })
 
 const actions = {
@@ -23,8 +22,8 @@ class EventDashboard extends Component {
   }
 
   render() {
-    const {events, loading} = this.props
-    if (loading) {
+    const { events } = this.props
+    if (!isLoaded(events) || isEmpty(events)) {
       return <LoadingComponent inverted={true}/>
     }
     return (
