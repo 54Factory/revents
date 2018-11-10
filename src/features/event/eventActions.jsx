@@ -25,11 +25,11 @@ export const getEventsForDashboard = lastEvent => async (dispatch, getState) => 
           .where('date', '>=', today)
           .orderBy('date')
           .startAfter(startAfter)
-          .limit(2))
+          .limit(3))
       : (query = eventsRef
           .where('date', '>=', today)
           .orderBy('date')
-          .limit(2));
+          .limit(4));
     
     let querySnap = await query.get();
 

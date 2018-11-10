@@ -25,7 +25,12 @@ const actions = {
   getEventsForDashboard
 };
 
+
+
+
 class EventDashboard extends Component {
+
+
   state = {
     moreEvents: false,
     loadingInitial: true,
@@ -53,6 +58,8 @@ class EventDashboard extends Component {
     }
   }
 
+
+
   getNextEvents = async () => {
     const { events } = this.props;
     let lastEvent = events && events[events.length - 1];
@@ -65,8 +72,13 @@ class EventDashboard extends Component {
       });
     }
   };
-
   handleContextRef = contextRef => this.setState({contextRef}) 
+
+
+
+
+
+
 
   render() {
     const { loading, activities } = this.props;

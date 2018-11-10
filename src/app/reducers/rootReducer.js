@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   form: FormReducer,
-  test: testReducer,
+  //test: testReducer,
   events: eventReducer,
   modals: modalReducer,
   auth: authReducer,
