@@ -5,7 +5,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 class EventList extends Component {
   render() {
     const { events, getNextEvents, loading, moreEvents } = this.props;
-    console.log(this.props)
+    //console.log(this.props)
     return (
       <div>
         {events &&
@@ -15,6 +15,7 @@ class EventList extends Component {
               loadMore={getNextEvents}
               hasMore={!loading && moreEvents}
               initialLoad={false}
+              
             >
               {events && events.map(event => <EventListItem key={event.id} event={event}/>)}
             </InfiniteScroll>
