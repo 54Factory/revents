@@ -5,6 +5,7 @@ import { asyncActionStart, asyncActionFinish, asyncActionError } from '../async/
 //import { fetchSampleData } from '../../app/data/mockAPI';
 import { createNewEvent } from '../../app/common/util/helpers'
 import firebase from '../../app/config/firebase'
+import compareAsc from 'date-fns/compare_asc'
 
 export const getEventsForDashboard = lastEvent => async (dispatch, getState) => {
   let today = new Date(Date.now());
@@ -22,22 +23,21 @@ export const getEventsForDashboard = lastEvent => async (dispatch, getState) => 
 
     lastEvent
       ? (query = eventsRef
-          .where('date', '>=', today)
-          .orderBy('date')
-          .startAfter(startAfter)
-          .limit(3))
+        .where('date', '>=', today)
+        .orderBy('date')
+        .startAfter(startAfter)
+        .limit(3))
       : (query = eventsRef
-          .where('date', '>=', today)
-          .orderBy('date')
-          .limit(4));
-    
+        .where('date', '>=', today)
+        .orderBy('date')
+        .limit(4));
+
     let querySnap = await query.get();
 
     if (querySnap.docs.length === 0) {
       dispatch(asyncActionFinish());
       return querySnap;
     }
-
     let events = [];
 
     for (let i = 0; i < querySnap.docs.length; i++) {
@@ -46,7 +46,7 @@ export const getEventsForDashboard = lastEvent => async (dispatch, getState) => 
     }
     dispatch({ type: FETCH_EVENTS, payload: { events } });
     dispatch(asyncActionFinish());
-    return querySnap;
+      return querySnap;
   } catch (error) {
     console.log(error);
     dispatch(asyncActionError());
@@ -76,19 +76,42 @@ export const createEvent = (event) => {
 }
 
 export const updateEvent = event => {
-  return async (dispatch, getState, {getFirestore}) => {
-    const firestore = getFirestore();
+  return async (dispatch, getState) => {
+    dispatch(asyncActionStart());
+    const firestore = firebase.firestore();
     if (event.date !== getState().firestore.ordered.events[0].date) {
       event.date = moment(event.date).toDate();
     }
     try {
-      await firestore.update(`events/${event.id}`, event)
-      toastr.success('Success!', 'Your Event Has Been Updated!')
+      let eventDocRef = firestore.collection('events').doc(event.id);
+      let dateEqual = compareAsc(getState().firestore.ordered.events[0].date.toDate(), event.date);
+      if (dateEqual !== 0) {
+        let batch = firestore.batch();
+        await batch.update(eventDocRef, event);
+
+        let eventAttendeeRef = firestore.collection('event_attendee');
+        let eventAttendeeQuery = await eventAttendeeRef.where('eventId', '==', event.id);
+        let eventAttendeeQuerySnap = await eventAttendeeQuery.get();
+
+        for (let i = 0; i < eventAttendeeQuerySnap.docs.length; i++) {
+          let eventAttendeeDocRef = await firestore.collection('event_attendee').doc(eventAttendeeQuerySnap.docs[i].id);
+          await batch.update(eventAttendeeDocRef, {
+            eventDate: event.date
+          })
+        }
+        await batch.commit();
+      } else {
+        await eventDocRef.update(event);
+      }
+      dispatch(asyncActionFinish());
+      toastr.success('Success', 'Event has been updated');
     } catch (error) {
-      toastr.error('Oops! Shit got fucked up.....')
+      console.log(error);
+      dispatch(asyncActionError());
+      toastr.error('Oops', 'Something went wrong');
     }
-  } 
-}
+  };
+};
 
 export const cancelToggle = (cancelled, eventId) => 
   async (dispatch, getState, {getFirestore}) => {

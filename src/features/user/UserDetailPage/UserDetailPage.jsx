@@ -43,7 +43,7 @@ class UserDetailPage extends Component {
 
   async componentDidMount() {
     let events = await this.props.getUserEvents(this.props.userUid);
-    //console.log(events);
+    console.log(events);
   }
 
   // eslint-disable-next-line no-undef

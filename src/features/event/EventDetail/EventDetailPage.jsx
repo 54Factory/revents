@@ -20,6 +20,7 @@ const mapState = (state, ownProps) => {
   return {
     event,
     auth: state.firebase.auth,
+    loading: state.async.loading,
     eventChat: 
       !isEmpty(state.firebase.data.event_chat) && 
       objectToArray(state.firebase.data.event_chat[ownProps.match.params.id])
@@ -45,7 +46,7 @@ class EventDetailPage extends Component {
   }
   
   render() {
-    const {event, auth, goingToEvent, cancelGoingToEvent, addEventComment, eventChat} = this.props;
+    const {loading, event, auth, goingToEvent, cancelGoingToEvent, addEventComment, eventChat} = this.props;
     const attendees = event && event.attendees && objectToArray(event.attendees);
     const isHost = event.hostUid === auth.uid;
     const isGoing = attendees && attendees.some(a => a.id === auth.uid)
@@ -53,7 +54,7 @@ class EventDetailPage extends Component {
     return (
       <Grid>
       <Grid.Column width={10}>
-        <EventDetailHeader event={event} isHost={isHost} isGoing={isGoing} goingToEvent={goingToEvent} cancelGoingToEvent={cancelGoingToEvent} />
+        <EventDetailHeader loading={loading} event={event} isHost={isHost} isGoing={isGoing} goingToEvent={goingToEvent} cancelGoingToEvent={cancelGoingToEvent} />
         <EventDetailInfo event={event}/>
         <EventDetailChat addEventComment={addEventComment} eventId={event.id} eventChat={chatTree} />
       </Grid.Column>
