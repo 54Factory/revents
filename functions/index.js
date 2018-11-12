@@ -88,15 +88,12 @@ exports.userFollowing = functions.firestore
       };
       console.log("------>",followerDoc);
       return admin
-      
         .firestore()
         .collection('users')
         .doc(followingUid)
         .collection('followers')
         .doc(followerUid)
-        .set(follower)
-        .then(() => console.log(follower))
-        
+        .set(follower)        
     });
     
     

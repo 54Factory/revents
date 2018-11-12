@@ -1,4 +1,21 @@
 import { INCREMENT_COUNTER, DECREMENT_COUNTER, COUNTER_ACTION_STARTED, COUNTER_ACTION_FINISHED } from './testConstants';
+import firebase from '../../app/config/firebase';
+
+
+export const testPermissions = () => 
+  async (dispatch, getState) => {
+    const firestore = firebase.firestore();
+    try {
+      let userDocRef = await firestore.collection('users').doc('y55Y5oiKxZS6RYM1McXM6POw6fK2');
+      userDocRef.update({
+        displayName: 'Alabama'
+      })
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
 
 
 export const incrementCounter = () => {
