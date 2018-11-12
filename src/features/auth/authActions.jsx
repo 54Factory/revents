@@ -1,6 +1,7 @@
 import { SubmissionError, reset } from 'redux-form';
 import { closeModal } from '../modals/modalActions';
 import { toastr } from 'react-redux-toastr';
+import { auth } from 'firebase';
 
 export const login = (creds) => {
   return async (dispatch, getState, { getFirebase }) => {
@@ -9,6 +10,9 @@ export const login = (creds) => {
 
     try {
       await firebase.auth().signInWithEmailAndPassword(creds.email, creds.password)
+console.log('====================================');
+console.log(auth);
+console.log('====================================');
       dispatch(closeModal())
     } catch (error) {
       console.log(error);
@@ -66,6 +70,9 @@ export const registerUser = (user) =>
             createdAt: firestore.FieldValue.serverTimestamp()
           })
         }
+        console.log('====================================');
+        console.log(user);
+        console.log('====================================');
       } catch (error) {
         console.log(error)
       }

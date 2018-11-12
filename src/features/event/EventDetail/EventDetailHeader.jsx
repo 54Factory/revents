@@ -21,6 +21,9 @@ const EventDetailHeader = ({loading, openModal, authenticated, event, isHost, is
   if (event.date) {
     eventDate = event.date.toDate();
   }
+  console.log('====================================');
+  console.log(event);
+  console.log('====================================');
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: '0' }}>
@@ -64,7 +67,7 @@ const EventDetailHeader = ({loading, openModal, authenticated, event, isHost, is
           <Button
             as={Link}
             to={`/manage/${event.id}`}
-            color="orange"
+            color="blue"
           >
             Manage Event
           </Button>

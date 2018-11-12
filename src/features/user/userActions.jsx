@@ -150,7 +150,7 @@ export const goingToEvent = event =>
     try {
 
       let eventDocRef = firestore.collection('events').doc(event.id);
-      let eventAttendeeDocRef = firestore.collection('event_attendee').doc(`${event.id}_${user.id}`)
+      let eventAttendeeDocRef = firestore.collection('event_attendee').doc(`${event.id}_${user.uid}`)
 
       await firestore.runTransaction(async (transaction) => {
         await transaction.get(eventDocRef)

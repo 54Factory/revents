@@ -63,7 +63,7 @@ class UserDetailPage extends Component {
     const loading = requesting[`users/${match.params.id}`]
     const isFollowing = !isEmpty(following)
     //console.log();
-    console.log(this.props.following)
+    //console.log(this.props.following)
     
     if (loading) return <LoadingComponent inverted={true}/>
     return (

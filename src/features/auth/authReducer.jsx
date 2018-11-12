@@ -6,11 +6,15 @@ const initialState = {
 }
 
 export const loginUser = (state, payload) => {
+  console.log('====================================');
+  console.log(payload);
+  console.log('====================================');
   return {
     ...state,
     authenticated: true,
     currentUser: payload.creds.email
   }
+
 }
 
 export const signOutUser = (state, payload) => {

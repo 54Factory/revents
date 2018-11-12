@@ -50,6 +50,8 @@ class EventDetailPage extends Component {
       toastr.error('Not Found')
       this.props.history.push('/error')
     }
+    //console.log(event);
+    
     await firestore.setListener(`events/${match.params.id}`);
     this.setState({
       initialLoading: false

@@ -13,6 +13,7 @@ export const getEventsForDashboard = lastEvent => async (dispatch, getState) => 
   const eventsRef = firestore.collection('events');
   try {
     dispatch(asyncActionStart());
+    
     let startAfter =
       lastEvent &&
       (await firestore
@@ -26,30 +27,35 @@ export const getEventsForDashboard = lastEvent => async (dispatch, getState) => 
         .where('date', '>=', today)
         .orderBy('date')
         .startAfter(startAfter)
-        .limit(3))
+        .limit(2))
       : (query = eventsRef
         .where('date', '>=', today)
         .orderBy('date')
-        .limit(4));
+        .limit(2));
 
     let querySnap = await query.get();
 
     if (querySnap.docs.length === 0) {
       dispatch(asyncActionFinish());
+      //console.log('Query Snap------> ', querySnap);
       return querySnap;
+      
+      
     }
     let events = [];
 
     for (let i = 0; i < querySnap.docs.length; i++) {
       let evt = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
+
       events.push(evt);
     }
     dispatch({ type: FETCH_EVENTS, payload: { events } });
     dispatch(asyncActionFinish());
       return querySnap;
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     dispatch(asyncActionError());
+    toastr.error('Oops! Something did not work right.....')
   }
 };
 
@@ -70,7 +76,10 @@ export const createEvent = (event) => {
       })
       toastr.success('Success!', 'Your Event Has Been Created!')
     } catch (error) {
-      toastr.error('Oops! Shit got fucked up.....')
+      // console.log('====================================');
+      // console.log(error);
+      // console.log('====================================');
+      toastr.error('Oops! Something did not work right.....')
     }
   } 
 }
@@ -100,6 +109,8 @@ export const updateEvent = event => {
             eventDate: event.date
           })
         }
+        //console.log(batch);
+        
         await batch.commit();
       } else {
         await eventDocRef.update(event);
@@ -107,7 +118,7 @@ export const updateEvent = event => {
       dispatch(asyncActionFinish());
       toastr.success('Success', 'Event has been updated');
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       dispatch(asyncActionError());
       toastr.error('Oops', 'Something went wrong');
     }
@@ -127,7 +138,8 @@ export const cancelToggle = (cancelled, eventId) =>
         }
       })
     } catch (error) {
-      console.log(error);
+      toastr.error('Oops! Something did not work right.....')
+      //console.log(error);
     }
   }
 
@@ -148,7 +160,7 @@ export const cancelToggle = (cancelled, eventId) =>
       try {
         await firebase.push(`event_chat/${eventId}`, newComment)
       } catch (error) {
-        console.log(error);
+        //console.log(error);
         toastr.error('Oops', 'Comment not added')
       }
     }
