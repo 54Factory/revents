@@ -6,13 +6,14 @@ import {closeModal, openModal} from "./modalActions";
 
 const actions = {closeModal, openModal};
 
-class UnauthModal extends Component {
+class UnAuthModal extends Component {
 
   handleCloseModal = () => {
     if (this.props.location.pathname.includes('/event')) {
       this.props.closeModal()
     } else {
      this.props.history.goBack(); 
+     this.props.closeModal()
     }
     
     
@@ -49,4 +50,4 @@ class UnauthModal extends Component {
     }
 }
 
-export default withRouter(connect(null, actions)(UnauthModal));
+export default withRouter(connect(null, actions)(UnAuthModal));

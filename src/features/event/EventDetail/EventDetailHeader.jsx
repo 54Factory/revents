@@ -1,6 +1,6 @@
 import React from 'react'
 import format from 'date-fns/format'
-import { Segment, Image, Item, Header, Button } from 'semantic-ui-react';
+import { Segment, Image, Item, Header, Button, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
 
 const eventImageStyle = {
@@ -44,25 +44,31 @@ const EventDetailHeader = ({loading, openModal, authenticated, event, isHost, is
         </Segment>
       </Segment>
       <Segment attached="bottom">
-        {!isHost && (
+      {!isHost && (
           <div>
-            {isGoing &&
-              <Button onClick={() => cancelGoingToEvent(event)} color='red'>Cancel My Place</Button>
-            }
-            {
-              !isGoing && authenticated && (
-                <Button loading={loading} onClick={() => goingToEvent(event)} color="teal">JOIN THIS EVENT</Button>
-              )}
-            {
-              !authenticated && (
-                <Button loading={loading} onClick={() => openModal('UnAuthModal')} color="teal">JOIN THIS EVENT</Button>
-              )}
+              {isGoing && !event.cancelled &&
+              <Button onClick={() => cancelGoingToEvent(event)}>Cancel My Place</Button>}
 
+              {!isGoing && authenticated && !event.cancelled &&
+              <Button loading={loading} onClick={() => goingToEvent(event)} color="teal">JOIN THIS EVENT</Button>}
+              
+              {!authenticated && !event.cancelled &&
+              <Button loading={loading} onClick={() => openModal('UnAuthModal')} color="teal">JOIN THIS EVENT</Button>}
+              
+              {event.cancelled && !isHost &&
+              <Label size='large' color='red' content='This event has been cancelled'/>}
           </div>
-        )} 
-        {isHost &&
-           <Button as={Link} to={`/manage/${event.id}`} color="orange">Manage Event</Button>    
-        }
+        )}
+
+        {isHost && (
+          <Button
+            as={Link}
+            to={`/manage/${event.id}`}
+            color="orange"
+          >
+            Manage Event
+          </Button>
+        )}
       </Segment>
     </Segment.Group>
   )

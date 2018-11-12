@@ -95,6 +95,7 @@ export const updateEvent = event => {
 
         for (let i = 0; i < eventAttendeeQuerySnap.docs.length; i++) {
           let eventAttendeeDocRef = await firestore.collection('event_attendee').doc(eventAttendeeQuerySnap.docs[i].id);
+          
           await batch.update(eventAttendeeDocRef, {
             eventDate: event.date
           })
